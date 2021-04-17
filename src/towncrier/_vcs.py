@@ -12,11 +12,9 @@ HG = "mercurial"
 
 
 def repo_type():
-    if not call(["git", "status"], stdout=DEVNULL, stderr=DEVNULL):
-        return GIT
     if not call(["hg", "status"], stdout=DEVNULL, stderr=DEVNULL):
         return HG
-    raise RuntimeError
+    return GIT
 
 
 

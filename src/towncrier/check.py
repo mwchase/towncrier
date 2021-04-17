@@ -18,16 +18,10 @@ from ._vcs import repo_type, OUTGOING, OUTGOING_TARGET
 def _run(args, **kwargs):
     kwargs["stderr"] = STDOUT
     return check_output(args, **kwargs)
-    
-
-try:
-    DEFAULT = OUTGOING_TARGET[repo_type()]
-except RuntimeError, KeyError:
-    DEFAULT = ""
 
 
 @click.command(name="check")
-@click.option("--compare-with", default=DEFAULT)
+@click.option("--compare-with", default=OUTGOING_TARGET[repo_type()])
 @click.option("--dir", "directory", default=None)
 @click.option("--config", "config", default=None)
 def _main(compare_with, directory, config):
