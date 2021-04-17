@@ -12,15 +12,22 @@ from subprocess import CalledProcessError, check_output, STDOUT
 
 from ._settings import load_config_from_options
 from ._builder import find_fragments
+from ._vcs import repo_type, OUTGOING, OUTGOING_TARGET
 
 
 def _run(args, **kwargs):
     kwargs["stderr"] = STDOUT
     return check_output(args, **kwargs)
+    
+
+try:
+    DEFAULT = OUTGOING_TARGET[repo_type()]
+except RuntimeError, KeyError:
+    DEFAULT = ""
 
 
 @click.command(name="check")
-@click.option("--compare-with", default="origin/master")
+@click.option("--compare-with", default=DEFAULT)
 @click.option("--dir", "directory", default=None)
 @click.option("--config", "config", default=None)
 def _main(compare_with, directory, config):
@@ -41,7 +48,7 @@ def __main(comparewith, directory, config):
     try:
         files_changed = (
             _run(
-                ["git", "diff", "--name-only", comparewith + "..."], cwd=base_directory
+                OUTGOING[repo_type()](comparewith), cwd=base_directory
             )
             .decode(encoding)
             .strip()

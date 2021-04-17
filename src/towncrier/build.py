@@ -17,7 +17,7 @@ from ._settings import load_config_from_options, ConfigError
 from ._builder import find_fragments, split_fragments, render_fragments
 from ._project import get_version, get_project_name
 from ._writer import append_to_newsfile
-from ._git import remove_files, stage_newsfile
+from ._vcs import remove_files, stage_newsfile
 
 
 def _get_date():
