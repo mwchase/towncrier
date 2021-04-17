@@ -12,7 +12,7 @@ from subprocess import CalledProcessError, check_output, STDOUT
 
 from ._settings import load_config_from_options
 from ._builder import find_fragments
-from ._vcs import repo_type, OUTGOING, OUTGOING_TARGET
+from ._vcs import REPO_TYPE, OUTGOING, OUTGOING_TARGET
 
 
 def _run(args, **kwargs):
@@ -21,7 +21,7 @@ def _run(args, **kwargs):
 
 
 @click.command(name="check")
-@click.option("--compare-with", default=OUTGOING_TARGET[repo_type()])
+@click.option("--compare-with", default=OUTGOING_TARGET[REPO_TYPE])
 @click.option("--dir", "directory", default=None)
 @click.option("--config", "config", default=None)
 def _main(compare_with, directory, config):
@@ -42,7 +42,7 @@ def __main(comparewith, directory, config):
     try:
         files_changed = (
             _run(
-                OUTGOING[repo_type()](comparewith), cwd=base_directory
+                OUTGOING[REPO_TYPE](comparewith), cwd=base_directory
             )
             .decode(encoding)
             .strip()

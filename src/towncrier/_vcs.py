@@ -11,10 +11,7 @@ GIT = "git"
 HG = "mercurial"
 
 
-def repo_type():
-    if not call(["hg", "status"], stdout=DEVNULL, stderr=DEVNULL):
-        return HG
-    return GIT
+REPO_TYPE = HG if not call(["hg", "status"], stdout=DEVNULL, stderr=DEVNULL) else GIT
 
 
 
@@ -61,9 +58,9 @@ def remove_files(fragment_filenames, answer_yes):
         click.echo(filename)
 
     if answer_yes or click.confirm("Is it okay if I remove those files?", default=True):
-        call(REMOVE[repo_type()](*fragment_filenames))
+        call(REMOVE[REPO_TYPE](*fragment_filenames))
 
 
 def stage_newsfile(directory, filename):
 
-    call(ADD[repo_type()](os.path.join(directory, filename)), stderr=DEVNULL)
+    call(ADD[REPO_TYPE](os.path.join(directory, filename)), stderr=DEVNULL)
