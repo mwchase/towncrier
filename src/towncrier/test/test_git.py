@@ -4,7 +4,7 @@
 
 from twisted.trial.unittest import TestCase
 
-from towncrier import _git
+from towncrier import _vcs
 
 
 class TestGit(TestCase):
@@ -12,4 +12,4 @@ class TestGit(TestCase):
         """
         If remove_files gets an empty list, it returns gracefully.
         """
-        _git.remove_files([])
+        _vcs.remove_files([])

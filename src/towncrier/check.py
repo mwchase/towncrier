@@ -14,7 +14,7 @@ from warnings import warn
 import click
 
 from ._builder import find_fragments
-from ._git import get_remote_branches, list_changed_files_compared_to_branch
+from ._vcs import get_remote_branches, list_changed_files_compared_to_branch
 from ._settings import config_option_help, load_config_from_options
 
 
@@ -29,6 +29,8 @@ def _get_default_compare_branch(branches: Container[str]) -> str | None:
             stacklevel=2,
         )
         return "origin/master"
+    if "remote(default, default)" in branches:
+        return "remote(default, default)"
     return None
 
 
@@ -83,6 +85,7 @@ def __main(
             base_directory, comparewith
         )
     except CalledProcessError as e:
+        # TODO update message
         click.echo("git produced output while failing:")
         click.echo(e.output)
         raise
